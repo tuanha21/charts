@@ -76,6 +76,7 @@ class ChartCanvas implements common.ChartCanvas {
       Rectangle<num>? clipBounds,
       common.Color? fill,
       common.Color? stroke,
+      bool? smoothLine,
       bool? roundEndCaps,
       double? strokeWidthPx,
       List<int>? dashPattern}) {
@@ -86,6 +87,7 @@ class ChartCanvas implements common.ChartCanvas {
         clipBounds: clipBounds,
         fill: fill,
         stroke: stroke,
+        smoothLine: smoothLine,
         roundEndCaps: roundEndCaps,
         strokeWidthPx: strokeWidthPx,
         dashPattern: dashPattern);
@@ -120,7 +122,8 @@ class ChartCanvas implements common.ChartCanvas {
       Rectangle<num>? clipBounds,
       common.Color? fill,
       common.Color? stroke,
-      double? strokeWidthPx}) {
+      double? strokeWidthPx,
+      bool smoothLine = false}) {
     PolygonPainter.draw(
         canvas: canvas,
         paint: _paint,
@@ -128,7 +131,8 @@ class ChartCanvas implements common.ChartCanvas {
         clipBounds: clipBounds,
         fill: fill,
         stroke: stroke,
-        strokeWidthPx: strokeWidthPx);
+        strokeWidthPx: strokeWidthPx,
+        smoothLine: smoothLine);
   }
 
   /// Creates a bottom to top gradient that transitions [fill] to transparent.

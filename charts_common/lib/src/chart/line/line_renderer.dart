@@ -960,7 +960,7 @@ class LineRenderer<D> extends BaseCartesianRenderer<D> {
           if (area != null) {
             canvas.drawPolygon(
                 clipBounds: _getClipBoundsForExtent(area.positionExtent),
-                fill: area.areaColor ?? area.color,
+                fill: area.areaColor != null ? area.areaColor : area.color,
                 points: area.points.toPoints());
           }
         });
@@ -1000,6 +1000,7 @@ class LineRenderer<D> extends BaseCartesianRenderer<D> {
                 points: line.points!.toPoints(),
                 stroke: line.color,
                 strokeWidthPx: line.strokeWidthPx,
+                smoothLine: config.smoothLine,
                 roundEndCaps: line.roundEndCaps);
           }
         });
