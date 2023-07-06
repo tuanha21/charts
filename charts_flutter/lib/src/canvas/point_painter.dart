@@ -24,7 +24,7 @@ class PointPainter {
   static void draw(
       {required Canvas canvas,
       required Paint paint,
-      required Point point,
+      required Point? point,
       required double radius,
       common.Color? fill,
       common.Color? stroke,

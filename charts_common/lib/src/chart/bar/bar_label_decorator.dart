@@ -61,6 +61,9 @@ class BarLabelDecorator<D> extends BarRendererDecorator<D> {
   /// Space before and after the label text.
   final int labelPadding;
 
+  /// rtl support
+  final bool rtl;
+
   BarLabelDecorator({
     TextStyleSpec? insideLabelStyleSpec,
     TextStyleSpec? outsideLabelStyleSpec,
@@ -69,6 +72,7 @@ class BarLabelDecorator<D> extends BarRendererDecorator<D> {
     this.labelPlacement = _defaultLabelPlacement,
     this.labelPadding = _defaultLabelPadding,
     this.labelVerticalPosition = _defaultlabelVerticalPosition,
+    this.rtl = false,
   })  : insideLabelStyleSpec = insideLabelStyleSpec ?? _defaultInsideLabelStyle,
         outsideLabelStyleSpec =
             outsideLabelStyleSpec ?? _defaultOutsideLabelStyle;
@@ -87,10 +91,10 @@ class BarLabelDecorator<D> extends BarRendererDecorator<D> {
 
     if (renderingVertically) {
       _decorateVerticalBars(
-          barElements, canvas, graphicsFactory, drawBounds, rtl);
+          barElements, canvas, graphicsFactory, drawBounds, this.rtl);
     } else {
       _decorateHorizontalBars(
-          barElements, canvas, graphicsFactory, drawBounds, rtl);
+          barElements, canvas, graphicsFactory, drawBounds, this.rtl);
     }
   }
 
@@ -340,12 +344,17 @@ class BarLabelDecorator<D> extends BarRendererDecorator<D> {
             break;
         }
       } else if (calculatedLabelPosition == BarLabelPosition.outside) {
+        print(measure);
+        print(labelPlacement);
+
         if (measure < 0 &&
             labelPlacement == BarLabelPlacement.opposeAxisBaseline) {
-          labelX = bounds.left - labelPadding;
+          labelX =
+              rtl ? bounds.right + labelPadding : bounds.left - labelPadding;
           labelElement.textDirection = TextDirection.rtl;
         } else {
-          labelX = bounds.right + labelPadding;
+          labelX =
+              !rtl ? bounds.right + labelPadding : bounds.right - labelPadding;
           labelElement.textDirection = TextDirection.ltr;
         }
       } else {

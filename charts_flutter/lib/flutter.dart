@@ -38,6 +38,7 @@ export 'package:charts_common/common.dart'
         BarLabelAnchor,
         BarLabelDecorator,
         BarLabelPosition,
+        BarLabelPlacement,
         BarLaneRendererConfig,
         BarRenderer,
         BarRendererConfig,
