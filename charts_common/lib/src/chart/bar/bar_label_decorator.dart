@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'dart:math' show Rectangle;
+import 'dart:math' show Rectangle, pi;
 
 import '../../common/color.dart' show Color;
 import '../../common/graphics_factory.dart' show GraphicsFactory;
@@ -61,9 +61,6 @@ class BarLabelDecorator<D> extends BarRendererDecorator<D> {
   /// Space before and after the label text.
   final int labelPadding;
 
-  /// rtl support
-  final bool rtl;
-
   BarLabelDecorator({
     TextStyleSpec? insideLabelStyleSpec,
     TextStyleSpec? outsideLabelStyleSpec,
@@ -72,7 +69,6 @@ class BarLabelDecorator<D> extends BarRendererDecorator<D> {
     this.labelPlacement = _defaultLabelPlacement,
     this.labelPadding = _defaultLabelPadding,
     this.labelVerticalPosition = _defaultlabelVerticalPosition,
-    this.rtl = false,
   })  : insideLabelStyleSpec = insideLabelStyleSpec ?? _defaultInsideLabelStyle,
         outsideLabelStyleSpec =
             outsideLabelStyleSpec ?? _defaultOutsideLabelStyle;
@@ -91,10 +87,10 @@ class BarLabelDecorator<D> extends BarRendererDecorator<D> {
 
     if (renderingVertically) {
       _decorateVerticalBars(
-          barElements, canvas, graphicsFactory, drawBounds, this.rtl);
+          barElements, canvas, graphicsFactory, drawBounds, rtl);
     } else {
       _decorateHorizontalBars(
-          barElements, canvas, graphicsFactory, drawBounds, this.rtl);
+          barElements, canvas, graphicsFactory, drawBounds, rtl);
     }
   }
 
@@ -317,7 +313,6 @@ class BarLabelDecorator<D> extends BarRendererDecorator<D> {
       if (calculatedLabelPosition == BarLabelPosition.inside) {
         final anchor = _resolveLabelAnchor(
             measure, labelAnchor ?? _defaultHorizontalLabelAnchor);
-
         switch (anchor) {
           case BarLabelAnchor.middle:
             labelX = (bounds.left +
@@ -344,17 +339,17 @@ class BarLabelDecorator<D> extends BarRendererDecorator<D> {
             break;
         }
       } else if (calculatedLabelPosition == BarLabelPosition.outside) {
-        print(measure);
-        print(labelPlacement);
-
         if (measure < 0 &&
             labelPlacement == BarLabelPlacement.opposeAxisBaseline) {
           labelX =
               rtl ? bounds.right + labelPadding : bounds.left - labelPadding;
           labelElement.textDirection = TextDirection.rtl;
         } else {
-          labelX =
-              !rtl ? bounds.right + labelPadding : bounds.right - labelPadding;
+          labelX = rtl
+              ? bounds.left -
+                  labelPadding -
+                  labelElement.measurement.horizontalSliceWidth.toInt()
+              : bounds.right + labelPadding;
           labelElement.textDirection = TextDirection.ltr;
         }
       } else {
@@ -386,7 +381,6 @@ class BarLabelDecorator<D> extends BarRendererDecorator<D> {
                 labelPadding)
             .round();
       }
-
       canvas.drawText(labelElement, labelX, labelY);
     }
   }

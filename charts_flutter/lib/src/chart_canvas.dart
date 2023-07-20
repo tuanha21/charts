@@ -228,7 +228,6 @@ class ChartCanvas implements common.ChartCanvas {
     // Use separate rect for drawing stroke
     _paint.color = new Color.fromARGB(fill!.a, fill.r, fill.g, fill.b);
     _paint.style = PaintingStyle.fill;
-
     canvas.drawRRect(
         _getRRect(bounds,
             radius: radius?.toDouble() ?? 0.0,
