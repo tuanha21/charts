@@ -34,5 +34,6 @@ class TextStyle implements common.TextStyle {
 
   @override
   int get hashCode =>
-      hashValues(fontSize, fontFamily, color, lineHeight, fontWeight);
+      Object.hash(fontSize, fontFamily, color, lineHeight, fontWeight);
+
 }
